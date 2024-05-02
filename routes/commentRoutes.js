@@ -43,22 +43,16 @@ router
       res.json(comments);
     }
   })
-  .post((req, res) => {
-    if (req.body.userId && req.body.postId && req.body.body) {
-      const isUser = users.find((u) => u.id == req.body.userId);
+  .post(async (req, res) => {
+    try {
+      const isUser = await User.findById(req.body.userId);
       if (!isUser) return res.json({ error: 'No user with that id exists' });
-      const isPost = posts.find((p) => p.id == req.body.postId);
+      const isPost = await Post.findById(req.body.postId);
       if (!isPost) return res.json({ error: 'No post with that id exists' });
-      const comment = {
-        id: comments[comments.length - 1].id + 1,
-        userId: Number(req.body.userId),
-        postId: Number(req.body.postId),
-        body: req.body.body,
-      };
-      comments.push(comment);
-      return res.json(comments[comments.length - 1]);
-    } else {
-      return res.json({ error: 'Invalid data' });
+      const comments = await Comment.create(req.body);
+      return res.json(comments);
+    } catch (err) {
+      return res.json({ err: err.message });
     }
   });
 
