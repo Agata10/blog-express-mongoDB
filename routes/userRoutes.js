@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 //const users = require('../data/users');
+const userController = require('../controllers/userController');
 const posts = require('../data/posts');
 const User = require('../models/userModel');
 //GET users and create-POST user
 router
   .route('/')
-  .get(async (req, res) => {
-    const users = await User.find();
-    res.render('users', { title: 'users', users });
-  })
+  .get(userController.getUsers)
   .post(async (req, res) => {
     const foundUser = await User.findOne({ username: req.body.username });
     if (foundUser) {
@@ -54,36 +53,51 @@ router.route('/:id/posts/create').get((req, res, next) => {
 //GET, PATCH, DELETE the user with specific id parameter
 router
   .route('/:id')
-  .get((req, res, next) => {
-    const user = users.find((u) => u.id == req.params.id);
+  .get(async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    const user = await User.findById(req.params.id);
+
     if (user) {
       res.json(user);
     } else {
       next();
+      return;
     }
   })
-  .patch((req, res) => {
-    const user = users.find((p) => p.id == req.params.id);
-    if (user) {
-      for (let key in req.body) {
-        user[key] = req.body[key];
+  .patch(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    try {
+      const result = await User.findByIdAndUpdate(
+        req.params.id,
+        { ...req.body },
+        {
+          new: true,
+        }
+      );
+      if (!result) {
+        return res.status(404).json({ error: 'Not such user' });
       }
-      res.json(user);
-    } else {
-      return res.json({ error: 'User not found' });
+      res.json(result);
+    } catch (err) {
+      res.json({ error: `Error ${err.message}` });
     }
   })
-  .delete((req, res) => {
-    const user = users.find((u, i) => {
-      if (u.id == req.params.id) {
-        users.splice(i, 1);
-        return true;
+  .delete(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    try {
+      const user = await User.findByIdAndDelete(req.params.id);
+      if (!user) {
+        return res.status(404).json({ error: 'Not such user' });
       }
-    });
-    if (user) {
       res.json(user);
-    } else {
-      return res.json({ error: 'User not found' });
+    } catch (err) {
+      res.json({ error: `Error ${err.message}` });
     }
   });
 
