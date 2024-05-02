@@ -58,36 +58,42 @@ router
 
 router
   .route('/:id')
-  .get((req, res, next) => {
-    const comment = comments.find((c) => c.id == req.params.id);
-    if (comment) {
-      return res.json(comment);
-    } else {
-      next();
-      return;
+  .get(async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    try {
+      const comment = await Comment.findById(req.params.id);
+      if (comment) {
+        return res.json(comment);
+      } else {
+        next();
+        return;
+      }
+    } catch (err) {
+      res.json({ error: 'Error: ' + err });
     }
   })
-  .patch((req, res) => {
-    const comment = comments.find((c) => c.id == req.params.id);
-    if (comment) {
-      for (let key in req.body) {
-        comment[key] = req.body[key];
-        if (key == 'userId' || key == 'postId') {
-          comment[key] = Number(req.body[key]);
-        }
-      }
-      return res.json(comment);
-    } else {
-      return res.json('Comment not found');
+  .patch(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
     }
-  })
-  .delete((req, res) => {
-    const comment = comments.find((c, i) => {
-      if (c.id == req.params.id) {
-        comments.splice(i, 1);
-        return true;
+
+    const comment = await Comment.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body },
+      {
+        new: true,
       }
-    });
+    );
+    if (!comment) return res.json('Comment not found');
+    return res.json(comment);
+  })
+  .delete(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    const comment = await Comment.findByIdAndDelete(req.params.id);
     if (comment) {
       return res.json(comment);
     } else {
