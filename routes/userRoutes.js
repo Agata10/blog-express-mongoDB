@@ -37,8 +37,6 @@ router.route('/:id/posts/').get(async (req, res, next) => {
       userPosts = await Post.find({ userId: req.params.id }).sort({
         createdAt: -1,
       });
-
-      console.log(userPosts);
     } else if (req.query.sortBy === 'asc') {
       userPosts = await Post.find({ userId: req.params.id }).sort({
         createdAt: 1,
