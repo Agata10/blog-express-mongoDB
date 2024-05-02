@@ -1,15 +1,22 @@
-const express = require("express");
+const express = require('express');
+require('dotenv').config();
+const PORT = process.env.PORT;
 const app = express();
-const PORT = 3000;
-const userRoutes = require("./routes/userRoutes");
-const postRoutes = require("./routes/postsRoutes");
-const commentRoutes = require("./routes/commentRoutes");
+
+//connect to db
+const connectToDB = require('./db/conn');
+connectToDB();
+
+//routes
+const userRoutes = require('./routes/userRoutes');
+const postRoutes = require('./routes/postsRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 //set up template engine
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
 //add static files from 'public' directory
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 //use body-parser to access send body in the request
 app.use(express.json());
@@ -33,68 +40,68 @@ app.use((req, res, next) => {
 });
 
 //custom middleware for all users routes
-app.use("/api/users", (req, res, next) => {
-  console.log("---------Users route---------");
+app.use('/api/users', (req, res, next) => {
+  console.log('---------Users route---------');
   next();
 });
 
 //homepage
 //render view with main links for /api routes
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   const menuLinks = [
-    { tagName: "Users", href: "/api/users" },
-    { tagName: "All Posts", href: "/api/posts" },
+    { tagName: 'Users', href: '/api/users' },
+    { tagName: 'All Posts', href: '/api/posts' },
   ];
-  res.render("home", { title: "Welcome to the world of magic", menuLinks });
+  res.render('home', { title: 'Welcome to the world of magic', menuLinks });
 });
 
 //add hypermedia for /api route
-app.get("/api", (req, res) => {
+app.get('/api', (req, res) => {
   res.json({
     links: [
       {
-        href: "api/users",
-        rel: "users",
-        type: "GET",
+        href: 'api/users',
+        rel: 'users',
+        type: 'GET',
       },
       {
-        href: "api/users",
-        rel: "users",
-        type: "POST",
+        href: 'api/users',
+        rel: 'users',
+        type: 'POST',
       },
       {
-        href: "api/posts",
-        rel: "posts",
-        type: "GET",
+        href: 'api/posts',
+        rel: 'posts',
+        type: 'GET',
       },
       {
-        href: "api/posts",
-        rel: "posts",
-        type: "POST",
+        href: 'api/posts',
+        rel: 'posts',
+        type: 'POST',
       },
       {
-        href: "api/comments",
-        rel: "comments",
-        type: "GET",
+        href: 'api/comments',
+        rel: 'comments',
+        type: 'GET',
       },
       {
-        href: "api/comments",
-        rel: "comments",
-        type: "POST",
+        href: 'api/comments',
+        rel: 'comments',
+        type: 'POST',
       },
     ],
   });
 });
 
 //use the users router and posts router and comments router
-app.use("/api/posts", postRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/comments", commentRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/comments', commentRoutes);
 
 //middleware to handling if route not found 404
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err.status = "404";
+  const err = new Error('Not Found');
+  err.status = '404';
   next(err);
 });
 
@@ -103,9 +110,9 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   const status = err.status || 500;
   const msg = err.message;
-  const title = "error";
+  const title = 'error';
   res.status(status);
-  res.render("error", { status, msg, title });
+  res.render('error', { status, msg, title });
 });
 
 app.listen(PORT, () => {
