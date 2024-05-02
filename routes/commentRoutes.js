@@ -1,32 +1,45 @@
 const express = require('express');
 const router = express.Router();
-const comments = require('../data/comments');
+const mongoose = require('mongoose');
 const users = require('../data/users');
 const posts = require('../data/posts');
 
 const Post = require('../models/postModel');
 const User = require('../models/userModel');
-
+const Comment = require('../models/commentModel');
 //GET and POST comment
 //GET posts by UserId or PostId query
 router
   .route('/')
   .get(async (req, res, next) => {
     if (req.query.userId) {
+      if (!mongoose.Types.ObjectId.isValid(req.query.userId)) {
+        next();
+        return;
+      }
       const isUser = await User.findById(req.query.userId);
+
       if (!isUser) {
         next();
+        return;
       }
       const userComments = await Comment.find({ userId: req.query.userId });
       return res.json(userComments);
     } else if (req.query.postId) {
+      if (!mongoose.Types.ObjectId.isValid(req.query.postId)) {
+        next();
+        return;
+      }
       const isPost = await Post.findById(req.query.postId);
       if (!isPost) {
         next();
+        return;
       }
-      const postComments = comments.filter((c) => c.postId == req.query.postId);
+      const postComments = await Comment.find({ postId: req.query.postId });
       return res.json(postComments);
     } else {
+      const comments = await Comment.find();
+      if (!comments) return res.json({ error: 'No comments found' });
       res.json(comments);
     }
   })
