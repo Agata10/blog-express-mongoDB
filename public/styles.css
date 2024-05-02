@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Lugrasimo&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lugrasimo", cursive;
+    width: 100vw;
+    min-height: 100vh;
+    margin-bottom: 60px;
+}
+
+header {
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid grey;
+}
+
+header>div:nth-child(2) {
+    align-self: flex-end;
+}
+
+header ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    font-size: 1.5rem;
+    padding-right: 100px;
+}
+
+h1 {
+    padding-left: 100px;
+    font-size: 3rem;
+    margin-bottom: 2px;
+}
+
+h3 {
+    margin-top: 0;
+    padding-left: 10px;
+    font-size: 1.5rem;
+    padding-left: 100px;
+}
+
+p {
+    font-family: "Comfortaa", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    color: grey;
+}
+
+a:hover {
+    color: rgb(255, 208, 0);
+}
+
+/*USERS*/
+.users-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 40px;
+    border-top: 1px solid grey;
+    gap: 40px;
+}
+
+.card {
+    width: 300px;
+    border: 2px solid rgb(101, 34, 34);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px;
+    font-size: 1.1rem;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.card p {
+    padding: 0 0 10px 10px;
+    margin: 0;
+}
+
+.card h4 {
+    padding-left: 10px;
+    margin: 2px;
+}
+
+button {
+    width: 150px;
+    align-self: center;
+    font-family: "Comfortaa", sans-serif;
+    font-size: 1rem;
+    background-color: rgb(101, 34, 34);
+    color: rgb(255, 208, 0);
+    border-radius: 6px;
+    padding: 5px 0;
+}
+
+button:hover {
+    background-color: rgb(47, 110, 72);
+}
+
+/*USERS POSTS*/
+
+.users-posts,
+.all-posts {
+    padding-top: 40px;
+    display: flex;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 35px;
+}
+
+img {
+    width: 100%;
+    height: 320px;
+    cursor: default;
+}
+
+.users-posts h2 {
+    width: 90%;
+    font-size: 1.6rem;
+}
+
+.post p {
+    margin: 0;
+    padding: 2px 0;
+    font-size: 1.1rem;
+}
+
+.post {
+    width: 85%;
+    /* border-bottom: 1px solid black; */
+    cursor: pointer;
+}
+
+.post>p {
+    width: 95%;
+}
+
+.post p:last-of-type {
+    display: none;
+}
+
+.post:hover p:last-of-type {
+    display: block;
+}
+
+
+.post h4 {
+    margin: 0;
+    padding: 0 0 5px 0;
+    font-size: 1.4rem;
+}
+
+/*COMMENTS*/
+
+/*FORM*/
+
+.wrapper-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60%;
+    width: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 300px;
+    border: 2px solid green;
+    border-radius: 12px;
+}
+
+form>div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+form>h2 {
+    font-size: 1.8em;
+}
+
+form input {
+    width: 80%;
+    font-family: "Comfortaa", sans-serif;
+    padding: 5px;
+    height: 30px;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+form input::placeholder {
+    font-size: 1.1rem;
+}
+
+/*COMMENTS*/
+.post>div div p {
+    font-size: 0.8rem;
+    width: 85%;
+}
+
+.post>div div p span {
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+@media screen and (max-width: 900px) {
+    header {
+        justify-content: center;
+        padding: 0;
+    }
+
+    header>div:nth-child(2) {
+        align-self: center;
+    }
+
+    h1,
+    h3 {
+        padding: 0;
+    }
+
+}

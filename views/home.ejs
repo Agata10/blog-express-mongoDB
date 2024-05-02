@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <header>
+      <div>
+        <h1><a href="/">Wizard World Blog</a></h1>
+        <h3><%=locals.title || "Welcome!" %></h3>
+      </div>
+      <div>
+        <ul>
+          <%if(locals.menuLinks) {%> <%menuLinks.forEach((link) => {%>
+          <li>
+            <a href="<%=link.href%>"><%=link.tagName%></a>
+          </li>
+          <% })%> <% } %>
+        </ul>
+      </div>
+    </header>
+  </body>
+</html>

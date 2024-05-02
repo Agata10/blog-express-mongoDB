@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <h1><a href="/">Wizard World Blog</a></h1>
+    <div class="wrapper-form">
+      <form action="/api/posts" method="post">
+        <h2>Create post</h2>
+        <div>
+          <input
+            type="text"
+            name="userId"
+            value="<%=userId%>"
+            style="display: none"
+          />
+          <input type="text" placeholder="Title..." name="title" required />
+          <input type="text" placeholder="Content..." name="content" required />
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

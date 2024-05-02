@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head.ejs') %>
+  <body>
+    <h1><a href="/">Wizard World Blog</a></h1>
+    <h3>Users:</h3>
+    <div class="users-content">
+      <% if(users.length > 0) { %> <% users.forEach(user => { %>
+      <div class="card" id="_<%=user.id%>">
+        <%if(user.img) {%>
+        <img src="<%=user.img%>" alt="pic" />
+        <%} else {%>
+        <img src="/images/none-img.jpeg" alt="no-img" />
+        <%}%>
+        <h4>Name: <%=user.name%></h4>
+        <p>Username: <%=user.username%></p>
+        <p>Email: <%=user.email%></p>
+        <button onclick="createPost(this)">Create Post</button>
+      </div>
+      <% })%> <%}%>
+    </div>
+    <div class="users-posts">
+      <% if(locals.userPosts) { %>
+      <h2>Posts created by <%=userName%>:</h2>
+      <% if(userPosts.length > 0) { %> <% userPosts.forEach(post => { %>
+
+      <div class="post" id="_<%=post.id%>">
+        <h4>Title: <%=post.title%></h4>
+        <p>Content: <%=post.content%></p>
+        <p>Id: <%=post.id%>, userId: <%=post.userId%></p>
+      </div>
+
+      <% })%> <%}%><%}%>
+    </div>
+    <script>
+      document
+        .querySelector(".users-content")
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          if (
+            e.target.className === "card" ||
+            e.target.parentNode.className === "card"
+          ) {
+            if (e.target.tagName !== "BUTTON" && e.target.tagName !== "IMG") {
+              const id =
+                e.target.id.slice(1) || e.target.parentNode.id.slice(1);
+              console.log(id);
+              window.location = `/api/users/${id}/posts`;
+            }
+          }
+        });
+
+      function createPost(btn) {
+        const id = btn.parentNode.id.slice(1);
+        window.location.href = `/api/users/${id}/posts/create`;
+      }
+    </script>
+  </body>
+</html>
