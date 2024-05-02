@@ -1,27 +1,28 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const comments = require("../data/comments");
-const users = require("../data/users");
-const posts = require("../data/posts");
+const comments = require('../data/comments');
+const users = require('../data/users');
+const posts = require('../data/posts');
+
+const Post = require('../models/postModel');
+const User = require('../models/userModel');
 
 //GET and POST comment
 //GET posts by UserId or PostId query
 router
-  .route("/")
-  .get((req, res, next) => {
+  .route('/')
+  .get(async (req, res, next) => {
     if (req.query.userId) {
-      const isUser = users.find((u) => u.id == req.query.userId);
+      const isUser = await User.findById(req.query.userId);
       if (!isUser) {
         next();
-        return;
       }
-      const userComments = comments.filter((c) => c.userId == req.query.userId);
+      const userComments = await Comment.find({ userId: req.query.userId });
       return res.json(userComments);
     } else if (req.query.postId) {
-      const isPost = posts.find((p) => p.id == req.query.postId);
+      const isPost = await Post.findById(req.query.postId);
       if (!isPost) {
         next();
-        return;
       }
       const postComments = comments.filter((c) => c.postId == req.query.postId);
       return res.json(postComments);
@@ -32,9 +33,9 @@ router
   .post((req, res) => {
     if (req.body.userId && req.body.postId && req.body.body) {
       const isUser = users.find((u) => u.id == req.body.userId);
-      if (!isUser) return res.json({ error: "No user with that id exists" });
+      if (!isUser) return res.json({ error: 'No user with that id exists' });
       const isPost = posts.find((p) => p.id == req.body.postId);
-      if (!isPost) return res.json({ error: "No post with that id exists" });
+      if (!isPost) return res.json({ error: 'No post with that id exists' });
       const comment = {
         id: comments[comments.length - 1].id + 1,
         userId: Number(req.body.userId),
@@ -44,12 +45,12 @@ router
       comments.push(comment);
       return res.json(comments[comments.length - 1]);
     } else {
-      return res.json({ error: "Invalid data" });
+      return res.json({ error: 'Invalid data' });
     }
   });
 
 router
-  .route("/:id")
+  .route('/:id')
   .get((req, res, next) => {
     const comment = comments.find((c) => c.id == req.params.id);
     if (comment) {
@@ -64,13 +65,13 @@ router
     if (comment) {
       for (let key in req.body) {
         comment[key] = req.body[key];
-        if(key == "userId" || key == "postId") {
-          comment[key] = Number(req.body[key])
+        if (key == 'userId' || key == 'postId') {
+          comment[key] = Number(req.body[key]);
         }
       }
       return res.json(comment);
     } else {
-      return res.json("Comment not found");
+      return res.json('Comment not found');
     }
   })
   .delete((req, res) => {
@@ -83,7 +84,7 @@ router
     if (comment) {
       return res.json(comment);
     } else {
-      return res.json("Comment not found");
+      return res.json('Comment not found');
     }
   });
 
