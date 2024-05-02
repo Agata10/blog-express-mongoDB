@@ -6,6 +6,13 @@ const app = express();
 const connectToDB = require('./db/conn');
 connectToDB();
 
+//models $ data files
+//for starting and uploading data pruposes
+const Post = require('./models/postModel');
+const User = require('./models/userModel');
+const postsData = require('./data/posts');
+const usersData = require('./data/users');
+
 //routes
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postsRoutes');
@@ -46,11 +53,19 @@ app.use('/api/users', (req, res, next) => {
 
 //homepage
 //render view with main links for /api routes
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   const menuLinks = [
     { tagName: 'Users', href: '/api/users' },
     { tagName: 'All Posts', href: '/api/posts' },
   ];
+  const posts = await Post.find();
+  if (posts.length === 0) {
+    await Post.insertMany(postsData);
+  }
+  const users = await User.find();
+  if (users.length === 0) {
+    await User.insertMany(usersData);
+  }
   res.render('home', { title: 'Welcome to the world of magic', menuLinks });
 });
 

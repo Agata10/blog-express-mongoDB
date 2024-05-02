@@ -1,92 +1,91 @@
-const express = require("express");
+const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
+const Post = require('../models/postModel');
+const User = require('../models/userModel');
 
-const posts = require("../data/posts");
-const users = require("../data/users");
+const postsData = require('../data/posts');
+const usersData = require('../data/users');
 
 //GET and POST posts
 router
-  .route("/")
-  .get((req, res, next) => {
+  .route('/')
+  .get(async (req, res, next) => {
     //for userId query
     if (req.query.userId) {
-      let userPosts = posts.filter((p) => p.userId == req.query.userId);
+      if (!mongoose.Types.ObjectId.isValid(req.query.userId)) {
+        next();
+        return;
+      }
+      let userPosts = await Post.find({ userId: req.query.userId });
       if (userPosts.length > 0) {
-        res.render("posts", { title: "posts", posts: userPosts });
+        res.render('posts', { title: 'posts', posts: userPosts });
       } else {
         next();
         return;
       }
     } else {
-      res.render("posts", { title: "posts", posts });
+      const posts = await Post.find();
+      res.render('posts', { title: 'posts', posts });
     }
 
     //res.json(posts);
   })
-  .post((req, res, next) => {
-    if (req.body.userId && req.body.title && req.body.content) {
-      const userExists = users.find((u) => u.id == req.body.userId);
-      if (userExists) {
-        const post = {
-          id: posts[posts.length - 1].id + 1,
-          userId: Number(req.body.userId),
-          title: req.body.title,
-          content: req.body.content,
-        };
-
-        posts.push(post);
-        res.json(posts[posts.length - 1]);
-        // console.log(req.body);
-        console.log("Successfully created post");
-        return;
-      }
-    } else {
-      return res.json({ error: "Invalid data" });
+  .post(async (req, res) => {
+    const userExists = await User.findById(req.body.userId);
+    if (!userExists) {
+      return res.json({ error: 'Not user found' });
+    }
+    try {
+      const post = await Post.create(req.body);
+      res.json(post);
+    } catch (err) {
+      return res.json({ error: 'error: ' + err.message });
     }
   });
 
 //GET posts by id, PUT by id, DELETE by id
 router
-  .route("/:id")
-  .get((req, res, next) => {
-    const post = posts.find((p) => p.id == req.params.id);
+  .route('/:id')
+  .get(async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    const post = await Post.findById(req.params.id);
     if (post) {
       res.json(post);
     } else {
       next();
     }
   })
-  .put((req, res) => {
-    const post = posts.find((p) => p.id == req.params.id);
-    if (post) {
-      if (req.body.userId && req.body.title && req.body.content) {
-        for (let key in req.body) {
-          post[key] = req.body[key];
-          if(key == "userId") {
-            post[key] = Number(req.body[key])
-          }
-        }
-        res.json(post);
-      } else {
-        return res.json({
-          error: "Properties required: userId, title, content",
-        });
+  .put(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    try {
+      const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+      if (!post) {
+        return res.status(404).json({ error: 'Not such post' });
       }
-    } else {
-      res.json({ error: "Post not found" });
+      res.json(post);
+    } catch (err) {
+      res.json({ error: `Error ${err.message}` });
     }
   })
-  .delete((req, res) => {
-    const post = posts.find((p, i) => {
-      if (p.id == req.params.id) {
-        posts.splice(i, 1);
-        return true;
+  .delete(async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.json({ error: 'Id is not valid' }).status(404);
+    }
+    try {
+      const post = await Post.findByIdAndDelete(req.params.id);
+      if (!post) {
+        return res.json({ error: 'Post not found' });
       }
-    });
-    if (post) {
       res.json(post);
-    } else {
-      return res.json({ error: "Post not found" });
+    } catch (err) {
+      res.json({ error: `Error ${err.message}` });
     }
   });
 
