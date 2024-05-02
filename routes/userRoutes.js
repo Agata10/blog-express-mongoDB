@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 
 //const users = require('../data/users');
 const userController = require('../controllers/userController');
-const posts = require('../data/posts');
 const User = require('../models/userModel');
 const Post = require('../models/postModel');
 //GET users and create-POST user
