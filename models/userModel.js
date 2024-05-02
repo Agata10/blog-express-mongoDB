@@ -30,4 +30,8 @@ userSchema.methods.joiEmailValidate = function () {
   });
   return emailSchema.validate({ email: this.email });
 };
+
+userSchema.static.getUsername = function () {
+  return this.username;
+};
 module.exports = mongoose.model('User', userSchema);

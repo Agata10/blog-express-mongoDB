@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const userController = require('../controllers/userController');
 const posts = require('../data/posts');
 const User = require('../models/userModel');
+const Post = require('../models/postModel');
 //GET users and create-POST user
 router
   .route('/')
@@ -26,27 +27,38 @@ router
 
 //Retrieves all posts by a user with the specified id
 //it might have query to sort by id either desc or asc
-router.route('/:id/posts/').get((req, res, next) => {
-  const userPosts = posts.filter((p) => p.userId == req.params.id);
-  const userName = users.find((u) => u.id == req.params.id).name;
-  if (req.query.sortBy === 'id:desc') {
-    userPosts.sort((a, b) => {
-      return b.id - a.id;
-    });
-  } else if (req.query.sortBy === 'id:asc') {
-    userPosts.sort((a, b) => {
-      return a.id - b.id;
-    });
-  }
-  if (userPosts) {
-    return res.render('users', { title: 'posts', users, userPosts, userName });
-  } else {
+router.route('/:id/posts/').get(async (req, res, next) => {
+  try {
+    let userPosts = await Post.find({ userId: req.params.id });
+    const user = await User.findById(req.params.id);
+    const users = await User.find();
+    const userName = user.username;
+    if (req.query.sortBy === 'desc') {
+      userPosts = await Post.find({ userId: req.params.id }).sort({
+        createdAt: -1,
+      });
+
+      console.log(userPosts);
+    } else if (req.query.sortBy === 'asc') {
+      userPosts = await Post.find({ userId: req.params.id }).sort({
+        createdAt: 1,
+      });
+    }
+    if (userPosts) {
+      return res.render('users', {
+        title: 'posts',
+        users,
+        userPosts,
+        userName,
+      });
+    }
+  } catch (err) {
     next();
   }
 });
 
 //render creating post view
-router.route('/:id/posts/create').get((req, res, next) => {
+router.route('/:id/posts/create').get((req, res) => {
   res.render('createPost', { userId: req.params.id, title: 'create post' });
 });
 
