@@ -10,8 +10,10 @@ connectToDB();
 //for starting and uploading data pruposes
 const Post = require('./models/postModel');
 const User = require('./models/userModel');
+const Comment = require('./models/commentModel');
 const postsData = require('./data/posts');
 const usersData = require('./data/users');
+const commentData = require('./data/comments');
 
 //routes
 const userRoutes = require('./routes/userRoutes');
@@ -65,6 +67,10 @@ app.get('/', async (req, res) => {
   const users = await User.find();
   if (users.length === 0) {
     await User.insertMany(usersData);
+  }
+  const comments = await Comment.find();
+  if (comments.length === 0) {
+    await Comment.insertMany(commentData);
   }
   res.render('home', { title: 'Welcome to the world of magic', menuLinks });
 });

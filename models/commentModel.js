@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
-const postSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    title: {
-      type: String,
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
       required: true,
-      minLength: 3,
     },
-    content: {
+    body: {
       type: String,
       required: true,
       minLength: 10,
@@ -21,4 +21,4 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Comment', commentSchema);
