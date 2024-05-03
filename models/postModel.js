@@ -6,6 +6,7 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+      index: true, //created index, this worked
     },
     title: {
       type: String,
@@ -22,6 +23,7 @@ const postSchema = new mongoose.Schema(
 );
 
 ///post are often taken based on user id
-postSchema.index({ userId: 1 });
+// postSchema.index({ userId: 1 });
+//NOTE it didnt want to work
 
 module.exports = mongoose.model('Post', postSchema);
