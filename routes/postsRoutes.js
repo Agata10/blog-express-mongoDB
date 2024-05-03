@@ -4,6 +4,7 @@ const router = express.Router();
 const Post = require('../models/postModel');
 const User = require('../models/userModel');
 
+
 //GET and POST posts
 router
   .route('/')
