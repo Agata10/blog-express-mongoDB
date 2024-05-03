@@ -1,6 +1,6 @@
-# SBA-318-Express-Server
+# SBA-319-Express-Server-MongoDB
 
-Skill based assigment creating a express server
+Skill based assigment creating a express server and connecting it to MongoDB
 
 ## Table of Contents
 
@@ -19,12 +19,12 @@ The assigment is one of the task from Software Engineering Bootcamp.
 
 Objectives:
 
-- Create a server application with Node and Express.
-- Create a RESTful API using Express.
-- Create Express middleware.
-- Use Express middleware.
-- Use a template engine to render views with Express.
-- Interact with a self-made API through HTML forms.
+- Create a server application with Node, Express, and MongoDB.
+- Create a CRUD API using Express and MongoDB.
+- Create MongoDB indexes.
+- Use MongoDB indexing to make efficient queries.
+- Create MongoDB validation rules.
+- Use MongoDB validation to ensure data consistency.
 
 The server is a simple blog app, where client can do CRUD operation with users, posts, comments.<br>
 The server is using EJS package to render views to the client.<br>
