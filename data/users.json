@@ -1,0 +1,35 @@
+[
+  {
+    "_id": "663401fa84ebbdf382c416fc",
+    "name": "Hermione",
+    "username": "HermioneG123",
+    "email": "hermione123@example.com",
+    "img": "/images/hermione.jpeg"
+  },
+  {
+    "_id": "663401fa84ebbdf382c416fd",
+    "name": "Harry",
+    "username": "HarryP",
+    "email": "Harry_P@example.com",
+    "img": "/images/harry.webp"
+  },
+  {
+    "_id": "663401fa84ebbdf382c416fe",
+    "name": "Ronald",
+    "username": "Weasley",
+    "email": "Weasley@example.com",
+    "img": "/images/ron.jpeg"
+  },
+  {
+    "_id": "663434380bd4b55564455e30",
+    "name": "Luna",
+    "username": "Lunaaa",
+    "email": "Luna@gmail.com"
+  },
+  {
+    "_id": "6634312f7e0fee1051cc8b89",
+    "name": "Neville",
+    "username": "Neville123",
+    "email": "Neville@o2.pl"
+  }
+]
