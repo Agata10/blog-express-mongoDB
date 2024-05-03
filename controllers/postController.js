@@ -27,6 +27,9 @@ module.exports.getPosts = async (req, res, next) => {
 
 //Create post
 module.exports.createPost = async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.body.userId)) {
+    return res.json({ error: 'Id is not valid' }).status(404);
+  }
   const userExists = await User.findById(req.body.userId);
   if (!userExists) {
     return res.json({ error: 'Not user found' });
