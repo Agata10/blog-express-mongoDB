@@ -29,7 +29,7 @@ Objectives:
 The server is a simple blog app, where client can do CRUD operation with users, posts, comments.<br>
 The server is using EJS package to render views to the client.<br>
 The server is using custom middleware to handle 404 - not found status, and error middleware for any other cases.<br>
-The form validation for creating a user was accomplished using Joi package.
+The email validation for creating a user was accomplished using Joi package.
 
 ## Technologies
 
@@ -54,12 +54,12 @@ The form validation for creating a user was accomplished using Joi package.
 2. Go to the project directory `cd my-project`
 3. Install packages `npm install`
 4. Create `.env` file and include your `ATLAS_URI`, optionally incluce `PORT`
-    - Note: In data folder, I provided starting data which will create collections automatically after `GET '/'` if they do not exists in your db
+   - Note: In data folder, I provided starting data which will create collections automatically after `GET '/'` if they do not exists in your db
 5. Run with node.js `nodemon server`
-    - or `npm run dev`
+   - or `npm run dev`
 6. In browser `http://localhost:3000/`
-    - or `http://localhost:3000/api`
-      - Note: Above route will show hypermedia - links to use API
+   - or `http://localhost:3000/api`
+     - Note: Above route will show hypermedia - links to use API
 
 ## API routes
 
