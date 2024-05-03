@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Post = require('../models/postModel');
-const User = require('../models/userModel');
 const postController = require('../controllers/postController');
 
 //GET and POST posts
