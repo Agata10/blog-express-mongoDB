@@ -24,10 +24,10 @@
           if (click) {
             postDiv.removeChild(postDiv.lastChild);
             click = false;
+            return;
           } else {
             if (postDiv.lastElementChild.tagName === "DIV") {
               postDiv.removeChild(postDiv.lastChild);
-              return;
             }
             const commentsHolder = document.createElement("div");
             commentsHolder.innerHTML = "";
