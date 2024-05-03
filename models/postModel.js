@@ -22,6 +22,6 @@ const postSchema = new mongoose.Schema(
 );
 
 ///post are often taken based on user id
-postSchema.index({userId: 1})
+postSchema.index({ userId: 1 });
 
 module.exports = mongoose.model('Post', postSchema);
