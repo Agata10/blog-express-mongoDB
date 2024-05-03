@@ -6,6 +6,7 @@ Skill based assigment creating a express server
 
 - [About](#about)
 - [Technologies](#technologies)
+- [Database](#database)
 - [Run Locally](#run-locally)
 - [API routes](#API-routes)
 - [API examples](#API-examples)
@@ -39,52 +40,31 @@ The form validation for creating a user was accomplished using Joi package.
 - Express.js
 - EJS package
 - Joi package
+- MongoDb
+- mongoose
+
+## Database
+
+   <br>
+      <img src="/public/images/database.png" width="700" height="500">
 
 ## Run Locally
 
-Clone the project
+1. Clone the project `git clone https://link-to-project`
+2. Go to the project directory `cd my-project`
+3. Install packages `npm install`
+4. Create `.env` file and include your `ATLAS_URI`, optionally incluce `PORT`
 
-```bash
-  git clone https://link-to-project
-```
+- Note: In data folder, I provided starting data which will create automatically after `GET '/'`
 
-Go to the project directory
+5. Run with node.js `nodemon server`
 
-```bash
-  cd my-project
-```
+- or `npm run dev`
 
-Install packages
+6. In browser `http://localhost:3000/`
 
-```bash
-  npm install
-```
-
-Run with node.js
-
-```bash
-  nodemon server
-```
-
-or
-
-```bash
-  npm run dev
-```
-
-In browser
-
-```bash
-  http://localhost:3000/
-```
-
-or
-
-```bash
-  http://localhost:3000/api
-```
-
-Note: Above route will show hypermedia - links to use API
+- or `http://localhost:3000/api`
+  - Note: Above route will show hypermedia - links to use API
 
 ## API routes
 
@@ -218,7 +198,7 @@ GET  /
 2. All users view
 
 ```javascript
-GET /api/users
+GET / api / users;
 ```
 
 The page is user friendly. When clicked on user card it will render posts created by user:
@@ -249,11 +229,11 @@ GET  /api/posts/
 1. When user click on the post it will show comments for this post
 2. When user hovers over the post it shows userId and post id.
 
-
 ## Screenshots
+
 1. All users view
    <br>
    <img src="/public/images/users.png" width="700" height="500">
 1. All posts view
    <br>
-      <img src="/public/images/posts.png" width="700" height="500">
+   <img src="/public/images/posts.png" width="700" height="500">
