@@ -12,6 +12,7 @@ Skill based assigment creating a express server and connecting it to MongoDB
 - [API examples](#API-examples)
 - [Template views](#template-views)
 - [Screenshots](#screenshots)
+- [License](#license)
 
 ## About
 
@@ -232,3 +233,9 @@ GET  /api/posts/
 1. All posts view
    <br>
    <img src="/public/images/posts.png" width="700" height="500">
+
+
+## License
+
+This project is licensed under a license. See the [LICENSE](LICENSE) file for details.
+
